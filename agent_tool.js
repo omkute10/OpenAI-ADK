@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { Agent, run, tool } from "@openai/agents";
 import { z } from 'zod';
 import axios from 'axios';
@@ -6,7 +7,7 @@ const getWeatherResultSchema = z.object({
     city: z.string().describe("Name of the City"),
     degree_c: z.string().describe("The degree celcius of the temperature"),
     condition: z.string().optional().describe("The condition of the weather")
-})
+});
 
 const getWeatherTool = tool({
     name: "get_weather",
@@ -17,7 +18,7 @@ const getWeatherTool = tool({
     execute: async function({ city }) {
         const url = `https://wttr.in/${city.toLowerCase()}?format=%C+%t`;
         const response = await axios.get(url, { responseType: 'text' });
-        // return `The weather of ${city} is ${response.data}`
+        return `The weather of ${city} is ${response.data}`
     }
 });
 
